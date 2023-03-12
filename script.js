@@ -56,8 +56,8 @@ for (let i of products.data) {
     // create card 
     let card = document.createElement("div");
 
-    // card should have category
-    card.classList.add("card", "i.category");    
+    // card should have category and initially hide
+    card.classList.add("card", i.category, "hide");    
 
     // image div 
     let imageContainer = document.createElement("div");
@@ -77,6 +77,77 @@ for (let i of products.data) {
     name.classList.add("product-name");
     name.innerText = i.productName.toUpperCase();
     container.appendChild(name);
+
+    // price of products
+
+    let price = document.createElement("h3");
+    price.classList.add("product-price");
+    price.innerText = "$ " + i.price;
+    container.appendChild(price);
+
     card.appendChild(container);
     document.getElementById("products").appendChild(card);
 }
+
+// category
+function filterProduct(value) {
+    // Button class code
+    let buttons = document.querySelectorAll(".button-value");
+    console.log(buttons);
+    buttons.forEach((button) => {
+        // check if value equals to innerText
+        if (value.toUpperCase() == button.innerText.toUpperCase()) {
+            button.classList.add("active");
+        } else {
+            button.classList.remove("active");
+        }
+    });
+
+    // select all cards
+
+    let elements = document.querySelectorAll(".card");
+    // loop through all cards
+
+    elements.forEach((element) => {
+        // display all card on 'all' button click
+        if (value == "all") {
+            element.classList.remove("hide");
+        } else {
+            // check if elements contains category
+            if (element.classList.contains(value)) {
+                // display element based on category
+                element.classList.remove("hide");
+            } else {
+                // hide other element 
+                element.classList.add("hide");
+            } 
+        }
+    });
+}
+
+
+ // search button click 
+ document.getElementById("search").addEventListener
+ ("click", () => {
+     // Initializations
+     let searchInput = document.getElementById("search-input").value;
+
+     let elements = document.querySelectorAll(".product-name");
+
+     let cards = document.querySelectorAll(".card");
+
+    elements.forEach((element, index) => {
+        if (element.innerText.includes(searchInput.toUpperCase())) {
+            // display matching 
+            cards[index].classList.remove("hide");
+        } else {
+            cards[index].classList.add("hide");
+        }
+     });
+ });
+
+
+// initially display all products
+window.onload = () => {
+    filterProduct("all");
+};
